@@ -1,0 +1,53 @@
+<script type="text/javascript">
+    RED.nodes.registerType('smithtek_duty_pumptrip',{
+        category: 'Smithtek Duty Standby',
+        color: '#B9B6B8',
+        defaults: {
+            name: {value:""},
+            pumpNumber: {value: 1}
+        },
+
+        inputs:1,
+        outputs:1,
+
+        icon: "smithtek.png",
+        paletteLabel: "pump trip formatter",
+        label: function() {
+            return this.name || this.to || "Pump " + this.pumpNumber  + " Trip Formatter";
+        },
+        labelStyle : function() {
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="smithtek_duty_pumptrip">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+             <div class="form-row" id="pumpNumber-details-for">
+            <label for="node-input-pumpNumber">Pump Number</label>
+            <select id="node-input-pumpNumber" style="width:200px !important">
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+        </div>
+ </script>
+
+<script type="text/x-red" data-help-name="smithtek_duty_pumptrip">
+    <p>A node to format the input <code>msg.payload</code> into a command for the Duty/Standby controller
+    <p><strong>Smithtek Pump Trip Formatter</strong><br/>
+    This node will output an object of the form:
+    <code><pre>{
+  payload:{
+    cmd:"pumpTrip",
+    value:{
+      pump: 1 or 2,
+      trip: msg.payload
+    }
+  }
+}</pre></code>
+    </p>
+
+</script>

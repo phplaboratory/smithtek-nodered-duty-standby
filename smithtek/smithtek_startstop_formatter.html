@@ -1,0 +1,42 @@
+<script type="text/javascript">
+    RED.nodes.registerType('smithtek_duty_start_stop',{
+        category: 'Smithtek Duty Standby',
+        color: '#B9B6B8',
+        defaults: {
+            name: {value:""}
+        },
+
+        inputs:1,
+        outputs:1,
+
+        icon: "smithtek.png",
+        paletteLabel: "start/stop formatter",
+        label: function() {
+            return this.name || this.to || "Start/Stop Formatter";
+        },
+        labelStyle : function() {
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="smithtek_duty_start_stop">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+ </script>
+
+<script type="text/x-red" data-help-name="smithtek_duty_start_stop">
+    <p>A node to format the input <code>msg.payload</code> into a command for the Duty/Standby controller
+    <p><strong>Smithtek Start/Stop Formatter</strong><br/>
+    This node will output an object of the form:
+    <code><pre>{
+  payload: {
+    cmd:"startStop",
+    value: msg.payload
+  }
+}</pre></code>
+    </p>
+
+</script>

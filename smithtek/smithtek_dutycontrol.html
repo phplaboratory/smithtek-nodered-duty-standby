@@ -1,0 +1,95 @@
+<script type="text/javascript">
+    RED.nodes.registerType('smithtek_dutycontrol',{
+        category: 'Smithtek Duty Standby',
+        color: '#B9B6B8',
+        defaults: {
+            name: {value:""},
+            senseTime: {value: "10", required:true, validate:function(v) { return RED.validators.number(v) && (v >= 0) && (v <= 300); }},
+            primary: {value: "Pump 1"}
+        },
+
+        inputs:1,
+        outputs:4,
+
+        outputLabels: ["pump 1", "pump 2", "sense flow 1", "sense flow 2"],
+
+        icon: "smithtek.png",
+        paletteLabel: "duty/standby controller",
+        label: function() {
+            return this.name || this.to || "Smithtek Duty Controller";
+         },
+        labelStyle : function() {
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="smithtek_dutycontrol">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+         <div class="form-row" id="delay-details-for">
+            <label for="node-input-senseTime"><i class="fa fa-clock-o"></i> Flow Sense Delay</label>
+            <input type="text" id="node-input-senseTime" style="text-align:end; width:50px !important">
+        </div>
+
+         <div class="form-row" id="primary-details-for">
+            <label for="node-input-primary">Primary Pump</label>
+            <select id="node-input-primary" style="width:200px !important">
+              <option value="Pump 1">Pump 1</option>
+              <option value="Pump 2">Pump 2</option>
+            </select>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="smithtek_dutycontrol">
+    <p>A node to control 2 pumps with a duty cycle of 2 to 1</p>
+    <p><strong>Smithtek Duty/Standby Controller</strong><br/>
+    This Node will control two pumps, turning on and off the pumps in a 2 to 1 ratio, with
+    the ability to specify the primary pump. The controller will attempt to start a pump and if
+    it doesn't receive a sense flow signal in the specified time out, will attempt to switch pumps
+    <ul>
+    <li><code>Flow Sense Delay</code> This amount of time to wait for the flow sense signal before switching pumps.</li>
+    <li><code>Primary Pump</code> Which pump is primary (will run twice and then run the secondary once).</li>
+    </ul>
+    <p><strong>Commands</strong><br/> There are four commands that this node takes as input.
+    <ul>
+    <li><code>StartStop</code> This is the command to start and stop the pump. It has the format of:
+    <code><pre>{
+  payload: {
+    cmd:"startStop",
+    value: true/false or 1/0
+  }
+}</pre></code>
+    </li>
+    <li><code>senseFlow</code> This is the command to indicate that flow has been sensed. It has the format of:
+    <code><pre>{
+  payload:{
+    cmd:"senseFlow",
+    flow: true/false or 1/0
+  }
+}</pre></code>
+    </li>
+    <li><code>pumpTrip</code> This is the command to lock/clear a pump. It has the format of:
+    <code><pre>{
+  payload:{
+    cmd:"pumpTrip",
+    value:{
+      pump: 1 or 2,
+      trip: true/false or 1/0
+    }
+  }
+}</pre></code>
+    </li>
+    </ul>
+    </p>
+    <p><strong>Outputs</strong></br>
+    <ul>
+    <li><code>pump 1</code> Output to control pump 1</li>
+    <li><code>pump 2</code> Output to control pump 2</li>
+    <li><code>sense flow 1</code> Output to indicate flow has been sensed when pump 1 is running</li>
+    <li><code>sense flow 2</code> Output to indicate flow has been sensed when pump 2 is running</li>
+    </ul>
+</script>
