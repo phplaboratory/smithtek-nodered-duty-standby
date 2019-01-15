@@ -4,14 +4,14 @@
         color: '#B9B6B8',
         defaults: {
             name: {value:""},
-            senseTime: {value: "10", required:true, validate:function(v) { return RED.validators.number(v) && (v >= 0) && (v <= 300); }},
+            senseTime: {value: "60", required:true, validate:function(v) { return RED.validators.number(v) && (v >= 0) && (v <= 300); }},
             primary: {value: "Pump 1"}
         },
 
         inputs:1,
         outputs:4,
 
-        outputLabels: ["pump 1", "pump 2", "sense flow 1", "sense flow 2"],
+        outputLabels: ["pump 1", "pump 2", "no flow 1", "no flow 2"],
 
         icon: "smithtek.png",
         paletteLabel: "duty/standby controller",
@@ -64,7 +64,7 @@
   }
 }</pre></code>
     </li>
-    <li><code>senseFlow</code> This is the command to indicate that flow has been sensed. It has the format of:
+    <li><code>senseFlow</code> This is the command to indicate that flow has been sensed. True indicates flow has been detected. It has the format of:
     <code><pre>{
   payload:{
     cmd:"senseFlow",
@@ -72,7 +72,7 @@
   }
 }</pre></code>
     </li>
-    <li><code>pumpTrip</code> This is the command to lock/clear a pump. It has the format of:
+    <li><code>pumpTrip</code> This is the command to lock/clear a pump. True will lock the pump, False will clear the lock. It has the format of:
     <code><pre>{
   payload:{
     cmd:"pumpTrip",
@@ -89,7 +89,7 @@
     <ul>
     <li><code>pump 1</code> Output to control pump 1</li>
     <li><code>pump 2</code> Output to control pump 2</li>
-    <li><code>sense flow 1</code> Output to indicate flow has been sensed when pump 1 is running</li>
-    <li><code>sense flow 2</code> Output to indicate flow has been sensed when pump 2 is running</li>
+    <li><code>no flow 1</code> True indicates no flow detected while running pump 1</li>
+    <li><code>no flow 2</code> True indicates no flow detected while running pump 2</li>
     </ul>
 </script>

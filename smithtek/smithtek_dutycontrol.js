@@ -33,6 +33,8 @@ module.exports = function(RED){
 
         this.payloadTrue = {payload: true};
         this.payloadFalse = {payload: false};
+        this.outputNoFlowDetected = {payload: true};
+        this.outputFlowDetected = {payload: false};
 
         var node = this;
 
@@ -50,21 +52,21 @@ module.exports = function(RED){
                 let outArray = Array(4).fill(null);
                 if (msg.payload.flow === 1 || msg.payload.flow === true || msg.payload.flow === "true") {
                     // flow is happening, if there is a timeout waiting for it, we'll kill it
-                    if (this.senseTimeout != null) {
+                    if (node.senseTimeout != null) {
                         clearInterval(this.senseTimeout);
-                        this.senseTimeout = null;
+                        node.senseTimeout = null;
                     }
-                    outArray[this.currentPump + 1] = this.payloadTrue;
+                    outArray[node.currentPump + 1] = node.outputFlowDetected;
                     node.send(outArray);
                 } else if (msg.payload.flow === 0 || msg.payload.flow === false || msg.payload.flow === "false") {
                     // no flow detected, so we'll try the other pump
-                    this.stopPumps();
-                    outArray[this.currentPump + 1] = this.payloadFalse;
+                    node.stopPumps();
+                    outArray[this.currentPump + 1] = this.outputNoFlowDetected;
                     node.send(outArray);
-
-                    this.currentPump = this.nextPumpNumber(this.currentPump);
-                    this.cycleCount = 0;
-                    this.nextCycle();
+                    node.lockPump(node.currentPump);
+                    node.currentPump = node.nextPumpNumber(node.currentPump);
+                    node.cycleCount = 0;
+                    node.nextCycle();
                 }
             }
         };
@@ -142,8 +144,9 @@ module.exports = function(RED){
             this.senseTimeout = setInterval(function() {
                 // this will only get called if we don't get a signal on the flow pin
                 node.stopPumps();
-                let output = [null,null,null,null];
-                output[node.currentPump + 1] = node.payloadFalse;
+                let output = Array(4).fill(null);
+                output[node.currentPump + 1] = node.outputNoFlowDetected;
+                node.lockPump(node.currentPump);
                 node.send(output);
                 node.currentPump = node.nextPumpNumber(node.currentPump);
                 node.cycleCount = 0;
@@ -204,7 +207,7 @@ module.exports = function(RED){
             }
 
             if(this.running){
-                statusText = "Running" + statusText;
+                statusText = "Running: Pump " + this.currentPump + statusText;
                 this.status({fill:"green",shape:"dot",text:statusText});
             } else {
                 statusText = "Stopped" + statusText;

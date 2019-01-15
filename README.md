@@ -36,7 +36,7 @@ There are three commands that this node takes as input.
 }
 ```
 
-* __senseFlow__: This is the command to indicate that flow has been sensed. It has the format of:
+* __senseFlow__: This is the command to indicate that flow has been sensed. True indicates flow has been detected. It has the format of:
 ```
 {
   payload:{
@@ -46,7 +46,7 @@ There are three commands that this node takes as input.
 }
 ```
 
-* __pumpTrip__: This is the command to lock/clear a pump. It has the format of:
+* __pumpTrip__: This is the command to lock/clear a pump. True will lock the pump, False will clear the lock. It has the format of:
 ```
 {
   payload:{
@@ -62,8 +62,8 @@ There are three commands that this node takes as input.
 #### Outputs
 * __pump 1__: Output to control pump 1
 * __pump 2__: Output to control pump 2
-* __sense flow 1__: Output to indicate flow has been sensed when pump 1 is running
-* __sense flow 2__: Output to indicate flow has been sensed when pump 2 is running
+* __no flow 1__: True indicates no flow detected while running pump 1
+* __no flow 2__: True indicates no flow detected while running pump 2
 
 ### SmithTek startStop Formatter
 
