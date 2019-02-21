@@ -7,7 +7,8 @@
       "smithtek_dutycontrol": "smithtek/smithtek_dutycontrol.js",
       "smithtek_duty_start_stop": "smithtek/smithtek_startstop_formatter.js",
       "smithtek_duty_senseflow": "smithtek/smithtek_senseflow_formatter.js",
-      "smithtek_duty_pumptrip": "smithtek/smithtek_pumptrip_formatter.js"
+      "smithtek_duty_pumptrip": "smithtek/smithtek_pumptrip_formatter.js",
+      "smithtek_gps": "smithtek/smithtek_gps.js"
     }
   },
   "license": "MIT",
