@@ -3,12 +3,12 @@ module.exports = function(RED){
         RED.nodes.createNode(this, config);
 
         var node = this;
-        this.topic = config.topic;
+
 
         node.on('input', function(msg){
             var m = {}
             m.payload ={};
-            m.topic = node.topic;
+            m.topic = "/v1.6/devices";
             m.payload["position"] = {"value":1, "context":{} };
 
 
