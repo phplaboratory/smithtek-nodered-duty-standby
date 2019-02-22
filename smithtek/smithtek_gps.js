@@ -9,7 +9,7 @@ module.exports = function(RED){
             var m = {}
             m.payload ={};
             m.topic = "/v1.6/devices";
-            m.payload["position"] = {"value":1, "context":{} };
+            m.payload = {"value":1, "context":{} };
 
 
             var lat_rawData = new ArrayBuffer(4);
@@ -21,7 +21,7 @@ module.exports = function(RED){
             var lat_raw = Math.abs(lat_nb)
             var lat_deg = Math.floor(lat_raw / 100)
             var lat_dec = (lat_raw - (100 * lat_deg)) / 60
-            m.payload["position"]["context"]["lat"]= (lat_deg + lat_dec)*Math.sign(lat_nb);
+            m.payload["context"]["lat"]= (lat_deg + lat_dec)*Math.sign(lat_nb);
 
             var lng_rawData = new ArrayBuffer(4);
             var lng_intView = new Uint16Array(lng_rawData);
@@ -32,7 +32,7 @@ module.exports = function(RED){
             var lng_raw = Math.abs(lng_nb)
             var lng_deg = Math.floor(lng_raw / 100)
             var lng_dec = (lng_raw - (100 * lng_deg)) / 60
-            m.payload["position"]["context"]["lng"]= (lng_deg + lng_dec)*Math.sign(lng_nb);
+            m.payload["context"]["lng"]= (lng_deg + lng_dec)*Math.sign(lng_nb);
 
 
 
@@ -63,12 +63,12 @@ module.exports = function(RED){
 
 
 
-            // node.status({fill:"blue",shape:"ring",
-            //     text:
-            //         m.topic  + ":" +
-            //         "lat:" + m.payload["position"]["context"]["lat"] +
-            //         ",lng:"+ m.payload["position"]["context"]["lng"]
-            // });
+            node.status({fill:"blue",shape:"ring",
+                text:
+                    m.topic  + ":" +
+                    "lat:" + m.payload["context"]["lat"] +
+                    ",lng:"+ m.payload["context"]["lng"]
+            });
 
            node.send(m);
         });
